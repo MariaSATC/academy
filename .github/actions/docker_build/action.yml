@@ -7,28 +7,30 @@ inputs:
     default: 'Dockerfile'
   image_name:
     description: "Image name"
+    required: true
   tag_name:
     description: "Docker Image Tag name"
+    default: ''
 
 runs:
   using: composite
   steps:
-    - name: Define Tag name
-      run: |
-       if [ -z "${{ inputs.tag_name }}" ]; 
-          then export TAG=$(date +%s)
-        else
-          export TAG="${{ inputs.tag_name }}"
-        fi 
-        docker build . --file ${{ inputs.path_dockerfile }} --tag 'mariacosta870/mod_cicd${{ inputs.image_name }}':$TAG
+    - name: Set TAG variable
       shell: bash
+      run: |
+        if [ -z "${{ inputs.tag_name }}" ]; then
+          TAG=$(date +%s)
+        else
+          TAG="${{ inputs.tag_name }}"
+        fi
+        echo "TAG=$TAG" >> $GITHUB_ENV
 
-    - name: Define Image name
-      run: echo "DOCKER_IMAGE_NAME=${{ inputs.image_name }}:${{ env.TAG }}" >> $GITHUB_ENV
+    - name: Define Docker Image name
+      run: echo "DOCKER_IMAGE_NAME=mariacosta870/${{ inputs.image_name }}:$TAG" >> $GITHUB_ENV
       shell: bash
 
     - name: Docker Build
-      run: docker build .  --file ${{ inputs.path_dockerfile }} --tag ${{ env.DOCKER_IMAGE_NAME }}
+      run: docker build . --file ${{ inputs.path_dockerfile }} --tag ${{ env.DOCKER_IMAGE_NAME }}
       shell: bash
 
     - name: Verify Docker Images
