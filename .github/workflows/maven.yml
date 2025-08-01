@@ -13,7 +13,7 @@ env:
   artifact_name: "artifact_name"
   docker_path: "src/main/docker/Dockerfile.jvm"
   artifact_path: "artifact_name"
-  repo_name: "docker234231s"
+  repo_name: "mod_cicd"
 
 on:
   push:
