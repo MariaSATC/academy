@@ -8,12 +8,12 @@
 name: Java CI with Maven
 
 env:
-  docker_image_name: 'mariacosta870/mod_cicd'
+  docker_image_name: 'mod_cicd'            
   docker_tag_name: 'v1'
   artifact_name: "artifact_name"
   docker_path: "src/main/docker/Dockerfile.jvm"
   artifact_path: "artifact_name"
-  repo_name: "academy"
+  repo_name: "mariacosta870/academy" 
 
 on:
   push:
