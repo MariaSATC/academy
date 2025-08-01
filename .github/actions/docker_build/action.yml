@@ -1,35 +1,26 @@
-name: Docker Build Image
-description: "Action to Build the Project Docker Image"
-
+name: docker
+description: docker build
 inputs:
   path_dockerfile:
-    description: "Path to Dockerfile"
-    default: 'Dockerfile'
+    description: "Expecting Dockerfile"
+    required: false
+    default: "Dockerfile"
   image_name:
-    description: "Image name"
+    description: "Expecting image_name"
+    required: true
   tag_name:
-    description: "Docker Image Tag name"
-
+    description: "Expecting tag_name"
+    required: false
 runs:
-  using: composite
+  using: "composite"
   steps:
-    - name: Define Tag name
-      run: |
-        if [ -z "${{ inputs.tag_name }}" ]; then
-        echo "TAG=$(date +%s)" >> $GITHUB_ENV
+    - run: |
+        if [ -z "${{ inputs.tag_name }}" ]; 
+          then export TAG=$(date +%s)
         else
-        echo "TAG=${{ inputs.tag_name }}" >> $GITHUB_ENV
-        fi
+          export TAG="${{ inputs.tag_name }}"
+        fi 
+        docker build . --file ${{ inputs.path_dockerfile }} --tag 'docker234231s/${{ inputs.image_name }}':$TAG
       shell: bash
-
-    - name: Define Image name
-      run: echo "DOCKER_IMAGE_NAME=${{ inputs.image_name }}:${{ env.TAG }}" >> $GITHUB_ENV
-      shell: bash
-
-    - name: Docker Build
-      run: docker build .  --file ${{ inputs.path_dockerfile }} --tag ${{ env.DOCKER_IMAGE_NAME }}
-      shell: bash
-
-    - name: Verify Docker Images
-      run: docker images
-      shell: bash
+ 
+ 
