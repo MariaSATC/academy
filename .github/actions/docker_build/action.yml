@@ -20,7 +20,7 @@ runs:
         else
           export TAG="${{ inputs.tag_name }}"
         fi 
-        docker build . --file ${{ inputs.path_dockerfile }} --tag 'mariacosta870/${{ inputs.image_name }}':$TAG
+        docker build . --file ${{ inputs.path_dockerfile }} --tag 'mariacosta870/mod_cicd${{ inputs.image_name }}':$TAG
       shell: bash
 
     - name: Define Image name
